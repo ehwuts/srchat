@@ -9,7 +9,9 @@ bot.on("ready", () => {
 });
 
 bot.on("messageCreate", (msg) => {
-	console.log("<" + msg.channel + ">" + msg.user  + ": " + 
+	console.log("<" + msg.channel.id + ">" + msg.author.username  + 
+": 
+" + 
 msg.content);
 });
 
