@@ -1,0 +1,10 @@
+var config = {};
+
+config.discord_token = "";
+
+config.rave_token = "";
+config rave_addr = "";
+
+module.exports = config;
+
+
