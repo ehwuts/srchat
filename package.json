@@ -1,0 +1,12 @@
+{
+	"name": "@qwerzog/srchat",
+	"version": "0.1.0",
+	"private": true,
+	"license": "BSD-2-CLAUSE",
+	"author": "ehwuts matsu",
+
+	"dependencies" : 
+		{
+			"eris" : "latest"
+		}
+}
