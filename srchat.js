@@ -2,7 +2,7 @@ const config = require("./srchat-config.js");
 
 const WebHandler = require("./srchat-webhandler.js");
 var web = new WebHandler(config.web_key, config.web_timeout, config.web_key, config.web_host, config.web_path);
-var web.start();
+var web.start(config.web_interval);
 
 const Eris = require("eris");
 var discord = new Eris(config.discord_token);

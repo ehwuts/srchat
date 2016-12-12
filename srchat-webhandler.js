@@ -19,6 +19,7 @@ function WebHandler(setkey, settimeout, wkey, waddr, wpath) {
 	this.timeout = settimeout;
 	this.paused = false;
 	this.muted = false;
+	this.interval = undefined;
 	
 	this.respondlerLabels = [];
 	this.respondlers = [];
@@ -36,7 +37,8 @@ WebHandler.prototype.setRespondler = function(label, stringsender) {
 WebHandler.prototype.unsetRespondler = function(label) {
 	if (this.respondlers[label] !== undefined) this.respondlers[label] = undefined;
 }
-WebHandler.prototype.sendRequest = function(action, content) {
+//timeout and callback optional
+WebHandler.prototype.sendRequest = function(action, content, timeout, callback) {
 	var postData = querystring.stringify({
 		"k" : web_key,
 		"a" : action,
@@ -44,11 +46,20 @@ WebHandler.prototype.sendRequest = function(action, content) {
 	});
 	var options = Object.assign({}, web_options);
 	options.headers["Content-Length"] = Buffer.byteLength(postData);
+	if (timeout !== undefined) options.timeout = timeout;
 	
-	var req = http.request(options);
+	var req = (callback === undefined ? http.request(options) );
+	
 	req.on("error", (e) => { console.log(":err " + e.message); });
 	req.write(postData);
 	req.end();
+}
+WebHandler.prototype.readWeb = function () {
+
+}
+WebHandler.prototype.start = function (i) {
+	if (this.interval !== undefined) clearInterval(this.interval);
+	this.interval = setInterval(this.readWeb, i);
 }
 
 module.exports = WebHandler;
