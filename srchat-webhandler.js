@@ -2,13 +2,12 @@ const querystring = require("querystring");
 var http = require("http");
 
 var web_key = "";
-var web_addr = "";
 var web_options = {
 	hostname : "",
 	path : "",
 	method : "POST",
 	headers : {
-		"Content-Type" : "application/x-www-form-urlencoded",
+		"Content-type" : "application/x-www-form-urlencoded",
 		"Content-Length" : 0
 	}
 };
@@ -37,13 +36,14 @@ WebHandler.prototype.setRespondler = function(label, stringsender) {
 WebHandler.prototype.unsetRespondler = function(label) {
 	if (this.respondlers[label] !== undefined) this.respondlers[label] = undefined;
 }
-WebHandler.prototype.sendMessage = function(msg) {
+WebHandler.prototype.sendRequest = function(action, content) {
 	var postData = querystring.stringify({
-		"key" : web_key,
-		"message" : msg
+		"k" : web_key,
+		"a" : action,
+		"content" : content
 	});
 	var options = Object.assign({}, web_options);
-	options.headers["Content-Length"] = Buffer.bytelength(postData);
+	options.headers["Content-Length"] = Buffer.byteLength(postData);
 	
 	var req = http.request(options);
 	req.on("error", (e) => { console.log(":err " + e.message); });
