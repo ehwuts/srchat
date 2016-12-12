@@ -1,22 +1,24 @@
 const config = require("./srchat-config.js");
 
+const WebHandler = require("./srchat-webhandler.js");
+var web = new WebHandler(config.web_key, config.web_timeout, config.web_key, config.web_host, config.web_path);
+
 const Eris = require("eris");
+var discord = new Eris(config.discord_token);
 
-var bot = new Eris(config.discord_token);
 
-bot.on("ready", () => {
-	console.log("Ready.");
+discord.on("ready", () => {
+	console.log(":Discord connection ready.");
+	web.setRespondler("discord", function (v) {discord.createMessage});
 });
 
-bot.on("messageCreate", (msg) => {
-	console.log("<" + msg.channel.name + ">" + 
-			msg.author.username +  ": " + msg.content);
-	if (msg.channel.name === config.discord_channel) {
-		if (msg.content === "!ping") 
-bot.createMessage(msg.channel.id, "Pong!");
-		else if (msg.content === "!pong") 
-bot.createMessage(msg.channel.id, "Ping!");
+discord.on("messageCreate", (msg) => {
+	if (msg.channel.id === config.discord_channel && msg.author.id != discord.user.id) {
+		console.log("[DSC] " + msg.author.username + ": " + msg.content);
+		web.sendMessage(msg.author.username + ": " + msg.content);
+		if (msg.content === "!test") 
+discord.createMessage(msg.channel.id, "nou");
 	}
 });
 
-bot.connect();
+discord.connect();
