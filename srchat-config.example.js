@@ -9,6 +9,11 @@ config.web_path = "/";
 config.web_timeout = 10000;
 config.web_interval = 3000;
 
+config.irc_server = "";
+config.irc_user = "";
+config.irc_channel = "#soulraver";
+config.irc_authcmd = "";
+
 module.exports = config;
 
 

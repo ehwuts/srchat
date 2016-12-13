@@ -45,6 +45,7 @@ function WebHandler(setkey, settimeout, wkey, waddr, wpath) {
 	web_options.path = wpath;
 	
 	the_source_of_instability = this;
+	the_source_of_instability.start(config.web_interval);
 }
 
 WebHandler.prototype.setRespondler = function(label, stringsender) {
