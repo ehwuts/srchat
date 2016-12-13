@@ -5,7 +5,7 @@ const WebHandler = require("./srchat-webhandler.js");
 
 var web = new WebHandler(config.web_key, config.web_timeout, config.web_key, config.web_host, config.web_path, config.web_interval);
 var discord = new Eris(config.discord_token);
-var irc = new IRC.Client(config.irc_server, config.irc_user, { channels : [config.irc_channel], debug: true });
+var irc = new IRC.Client(config.irc_server, config.irc_user, { channels : [config.irc_channel] });
 
 var irc_expectwho = false;
 
@@ -23,7 +23,17 @@ irc.on("message#", (from, to, text, message) => {
 			irc.say(config.irc_channel, "nou");
 		} else if (text === "!who") {
 			web.sendRequest("who", "irc", web.timeout, web.receiveFunc);
-			//irc.say(config.irc_channel, "The following people are in discord/" + discord.getChannel(config.discord_channel).name + ": " +);
+			discord.getRESTGuildMembers(discord.getChannel(config.discord_channel).guild.id).then(function(v){
+				var discord_people = [];
+				var i = 0;
+				while (i < v.length()) {
+					if (v[i].status == "online") discord_people.push(v[i].nick());
+					i++;
+				}
+				irc.say(config.irc_channel, "[d] The following people are in " + discord.getChannel(config.discord_channel).name + ": " + discord_people.join(", "));	
+			}).catch(function(r){
+				console.log(":err retrieving discord who :"+r);
+			});			
 		} else {
 			var m = "[i] " + from + ": " + text;
 			console.log(m);
@@ -36,7 +46,7 @@ irc.on("registered", (m) => { console.log(":irc server connected"); });
 irc.on("names", (channel, nicks) => {
 	console.log(JSON.stringify(nicks));
 	if (irc_expectwho) {
-		discord.createMessage(config.discord_channel, "The following people are in irc/"+channel+": "+Object.keys(nicks).join(", "));
+		discord.createMessage(config.discord_channel, "[i] The following people are in "+channel+": "+Object.keys(nicks).join(", "));
 		irc_expectwho = false;
 	}
 });
