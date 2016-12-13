@@ -7,6 +7,14 @@ var web = new WebHandler(config.web_key, config.web_timeout, config.web_key, con
 var discord = new Eris(config.discord_token);
 var irc = new IRC.Client(config.irc_server, config.irc_user, { channels : [config.irc_channel] });
 
+irc.on("action", (from, to, text, message) => {
+	if (to === config.irc_channel && from !== irc.nick) {
+		var m = "[i] *" + from + ": " + text+"*";
+		console.log(m);
+		web.sendRequest("msg", m);
+		discord.createMessage(config.discord_channel, m);
+	}
+});
 irc.on("message#", (from, to, text, message) => {
 	if (to === config.irc_channel && from !== irc.nick) {
 		if (text === "!test") {
@@ -21,6 +29,7 @@ irc.on("message#", (from, to, text, message) => {
 		}
 	}
 });
+irc.on("registered", (m) => { console.log(":irc server connected"); });
 web.setRespondler("irc", function (v) {irc.say(config.irc_channel, v);});
 
 discord.on("ready", () => {

@@ -99,11 +99,13 @@ WebHandler.prototype.relayData = function (js) {
 	the_source_of_instability.lastmsg = d.last;
 	if (!the_source_of_instability.ready) {
 		the_source_of_instability.ready = true;
+		console.log(":web init retrieved "+d.last);
 	} else {
 		var i = 0;
 		while (i < d.lines.length) {
-			console.log("[w] " + d.lines[i]);
-			the_source_of_instability.respondlers[d.side](d.lines[i]);
+			line = "[w] " + d.lines[i];
+			console.log(line);
+			the_source_of_instability.respondlers[d.side](line);
 			++i;
 		}
 	}
