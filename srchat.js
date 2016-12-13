@@ -49,7 +49,10 @@ irc.on("registered", (m) => { console.log(":irc server connected"); });
 irc.on("names", (channel, nicks) => {
 	if (irc_expectwho) {
 		var irc_users = Object.keys(nicks).filter((v)=>{!(["D","Q",irc.nick].includes(v));});
-		discord.createMessage(config.discord_channel, "[i] The following people are in "+channel+": "+Object.keys(nicks).join(", "));
+		m = "[i] The following people are in "+channel+": "+irc_users.join(", ");
+		if (irc_users.length > 0) {
+			discord.createMessage(config.discord_channel, m);
+		}
 		irc_expectwho = false;
 	}
 });
