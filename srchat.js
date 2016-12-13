@@ -48,7 +48,8 @@ irc.on("message#", (from, to, text, message) => {
 irc.on("registered", (m) => { console.log(":irc server connected"); });
 irc.on("names", (channel, nicks) => {
 	if (irc_expectwho) {
-		var irc_users = Object.keys(nicks).filter((v)=>{!(["D","Q",irc.nick].includes(v));});
+		//console.log(Object.keys(nicks).join(", "));
+		var irc_users = Object.keys(nicks).filter((v)=>{return !(["D","Q",irc.nick].includes(v));});
 		m = "[i] The following people are in "+channel+": "+irc_users.join(", ");
 		if (irc_users.length > 0) {
 			discord.createMessage(config.discord_channel, m);
