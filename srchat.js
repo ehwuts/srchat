@@ -23,17 +23,20 @@ irc.on("message#", (from, to, text, message) => {
 			irc.say(config.irc_channel, "nou");
 		} else if (text === "!who") {
 			web.sendRequest("who", "irc", web.timeout, web.receiveFunc);
-			discord.getRESTGuildMembers(discord.getChannel(config.discord_channel).guild.id).then(function(v){
-				var discord_people = [];
+			
+			var discord_people = discord.getChannel(config.discord_channel).guild.members.filter((v) => {
+				return ((v.status === "online") && (v.username() !== discord.user.username));
+			});
+			if (discord_people.length > 0) {
+				var discord_names = [];
 				var i = 0;
-				while (i < v.length()) {
-					if (v[i].status == "online") discord_people.push(v[i].nick());
+				while (i < discord_people) {
+					discord_names.push(discord_people[i].username());
 					i++;
 				}
-				irc.say(config.irc_channel, "[d] The following people are in " + discord.getChannel(config.discord_channel).name + ": " + discord_people.join(", "));	
-			}).catch(function(r){
-				console.log(":err retrieving discord who :"+r);
-			});			
+				var m = "[d] The following people are in " + discord.getChannel(config.discord_channel).name + ": " + discord_people.join(", ");
+				irc.say(config.irc_channel, m);
+			}
 		} else {
 			var m = "[i] " + from + ": " + text;
 			console.log(m);
@@ -44,8 +47,8 @@ irc.on("message#", (from, to, text, message) => {
 });
 irc.on("registered", (m) => { console.log(":irc server connected"); });
 irc.on("names", (channel, nicks) => {
-	console.log(JSON.stringify(nicks));
 	if (irc_expectwho) {
+		var irc_users = Object.keys(nicks).filter((v)=>{!(["D","Q",irc.nick].includes(v));});
 		discord.createMessage(config.discord_channel, "[i] The following people are in "+channel+": "+Object.keys(nicks).join(", "));
 		irc_expectwho = false;
 	}
