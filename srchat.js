@@ -21,6 +21,7 @@ irc.on("message#", (from, to, text, message) => {
 			irc.say(config.irc_channel, "nou");
 		} else if (text === "!who") {
 			web.sendRequest("who", "irc", web.timeout, web.receiveFunc);
+			//irc.say(config.irc_channel, "The following people are in discord/" + discord.getChannel(config.discord_channel).name + ": " +);
 		} else {
 			var m = "[i] " + from + ": " + text;
 			console.log(m);
@@ -30,6 +31,9 @@ irc.on("message#", (from, to, text, message) => {
 	}
 });
 irc.on("registered", (m) => { console.log(":irc server connected"); });
+irc.on("names", (channel, nicks) => {
+	discord.createMessage(config.discord_channel, "The following people are in irc/"+channel+": "+nicks.toString());
+});
 web.setRespondler("irc", function (v) {irc.say(config.irc_channel, v);});
 
 discord.on("ready", () => {
@@ -43,6 +47,7 @@ discord.on("messageCreate", (msg) => {
 			discord.createMessage(msg.channel.id, "nou");
 		} else if (msg.content === "!who") {
 			web.sendRequest("who", "discord", web.timeout, web.receiveFunc);
+			irc.send("who", config.irc_channel);
 		} else {
 			var m = "[d] " + msg.author.username + ": " + msg.content;
 			console.log(m);
