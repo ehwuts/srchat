@@ -25,16 +25,16 @@ irc.on("message#", (from, to, text, message) => {
 			web.sendRequest("who", "irc", web.timeout, web.receiveFunc);
 			
 			var discord_people = discord.getChannel(config.discord_channel).guild.members.filter((v) => {
-				return ((v.status === "online") && (v.username() !== discord.user.username));
+				return ((v.status === "online") && (!v.user.bot));
 			});
 			if (discord_people.length > 0) {
 				var discord_names = [];
 				var i = 0;
-				while (i < discord_people) {
-					discord_names.push(discord_people[i].username());
+				while (i < discord_people.length) {
+					discord_names.push(discord_people[i].user.username);
 					i++;
 				}
-				var m = "[d] The following people are in " + discord.getChannel(config.discord_channel).name + ": " + discord_people.join(", ");
+				var m = "[d] The following people are in " + discord.getChannel(config.discord_channel).name + ": " + discord_names.join(", ");
 				irc.say(config.irc_channel, m);
 			}
 		} else {
