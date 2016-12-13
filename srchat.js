@@ -21,7 +21,6 @@ irc.on("message#", (from, to, text, message) => {
 		}
 	}
 });
-
 web.setRespondler("irc", function (v) {irc.say(config.irc_channel, v);});
 
 discord.on("ready", () => {

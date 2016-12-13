@@ -14,7 +14,7 @@ var web_options = {
 
 var the_source_of_instability = undefined;
 
-function WebHandler(setkey, settimeout, wkey, waddr, wpath) {
+function WebHandler(setkey, settimeout, wkey, waddr, wpath, winterval) {
 	if (the_source_of_instability !== undefined) {
 		console.log(":err second call to the fragility that is webhandler");
 		return the_source_of_instability;
@@ -45,7 +45,7 @@ function WebHandler(setkey, settimeout, wkey, waddr, wpath) {
 	web_options.path = wpath;
 	
 	the_source_of_instability = this;
-	the_source_of_instability.start(config.web_interval);
+	the_source_of_instability.start(winterval);
 }
 
 WebHandler.prototype.setRespondler = function(label, stringsender) {
