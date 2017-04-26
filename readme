@@ -1,3 +1,6 @@
 requires 
 	eris
 	irc
+todo
+	escape namerefs and emotes
+	handle eris web timeout exceptions

@@ -1,0 +1,4 @@
+ocassionally duplicate messages are received, so far only seen with :rollover
+eris netcode has an unhandled exception related to loss of network access
+--alternately forgets to reconnect to discord after same
+eris netcode doesn't renew access if discord's end goes down and expects new leases upon return

@@ -25,13 +25,17 @@ irc.on("message#", (from, to, text, message) => {
 			web.sendRequest("who", "irc", web.timeout, web.receiveFunc);
 			
 			var discord_people = discord.getChannel(config.discord_channel).guild.members.filter((v) => {
-				return ((v.status === "online") && (!v.user.bot));
+				return ((v.status !== "offline") && (!v.user.bot));
 			});
 			if (discord_people.length > 0) {
 				var discord_names = [];
 				var i = 0;
 				while (i < discord_people.length) {
-					discord_names.push(discord_people[i].user.username);
+					if (discord_people[i].status === "idle" ) {
+						discord_names.push(""+discord_people[i].user.username+"");
+					} else {
+						discord_names.push(discord_people[i].user.username);
+					}
 					i++;
 				}
 				var m = "[d] The following people are in " + discord.getChannel(config.discord_channel).name + ": " + discord_names.join(", ");
@@ -73,7 +77,7 @@ discord.on("messageCreate", (msg) => {
 			irc_expectwho = true;
 			irc.send("NAMES", config.irc_channel);
 		} else {
-			var m = "[d] " + msg.author.username + ": " + msg.content;
+			var m = "[d] " + msg.author.username + ": " + msg.cleanContent;
 			console.log(m);
 			web.sendRequest("msg", m);
 			irc.say(config.irc_channel, m);
