@@ -2,5 +2,19 @@ requires
 	eris
 	irc
 todo
-	escape namerefs and emotes
 	handle eris web timeout exceptions
+known bugs
+	occassionally duplicate messages are received, so far only seen with :rollover, possibly on website's end
+	eris netcode has an unhandled exception related to loss of network access
+	--alternately forgets to reconnect to discord after same
+	eris netcode doesn't renew access if discord's end goes down and expects new leases upon return
+
+-----------------------------------------------------------------
+	
+events.js:160
+      throw er; //Unhandled 'error' event
+
+Error: getaddrinfo ENOENT gateway.discord.gg:443
+    at Object.exports._errnoException (util.js:1018:11)
+	at errnoException (dns.js:33:15)
+	at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:76:26)
