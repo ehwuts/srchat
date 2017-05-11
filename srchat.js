@@ -77,7 +77,7 @@ discord.on("messageCreate", (msg) => {
 			irc_expectwho = true;
 			irc.send("NAMES", config.irc_channel);
 		} else {
-			var m = "[d] " + msg.author.username + ": " + msg.cleanContent;
+			var m = "[d] " + msg.author.username + ": " + msg.cleanContent.replace(/<(:.+?:)\d+>/g, '$1');
 			console.log(m);
 			web.sendRequest("msg", m);
 			irc.say(config.irc_channel, m);
