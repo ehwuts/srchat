@@ -5,7 +5,8 @@ const WebHandler = require("./srchat-webhandler.js");
 
 var web = new WebHandler(config.web_key, config.web_timeout, config.web_key, config.web_host, config.web_path, config.web_interval);
 var discord = new Eris(config.discord_token);
-var irc = new IRC.Client(config.irc_server, config.irc_user, { channels : [config.irc_channel] });
+var irc = new IRC.Client(config.irc_server, config.irc_user, { userName: "srchat", realName: "soulraver bridge", channels : [config.irc_channel] });
+irc.activateFloodProtection(500);
 
 var irc_expectwho = false;
 
