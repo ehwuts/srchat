@@ -50,7 +50,10 @@ irc.on("message#", (from, to, text, message) => {
 		}
 	}
 });
-irc.on("registered", (m) => { console.log(":irc server connected"); });
+irc.on("registered", (m) => {
+	console.log(":irc server connected");
+	if (config.irc_auth_name != "") irc.send("auth", config.irc_auth_name, config.irc_auth_password);
+});
 irc.on("names", (channel, nicks) => {
 	if (irc_expectwho) {
 		//console.log(Object.keys(nicks).join(", "));
