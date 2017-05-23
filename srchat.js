@@ -53,6 +53,7 @@ irc.on("message#", (from, to, text, message) => {
 irc.on("registered", (m) => {
 	console.log(":irc server connected");
 	if (config.irc_auth_name != "") irc.send("auth", config.irc_auth_name, config.irc_auth_password);
+	irc.send("mode", irc.nick, "+x");
 	irc.join(config.irc_channel);
 });
 irc.on("names", (channel, nicks) => {
