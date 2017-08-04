@@ -92,3 +92,7 @@ discord.on("messageCreate", (msg) => {
 });
 
 discord.connect();
+
+discord.on("disconnect", () => {
+	discord.connect();
+});
