@@ -78,7 +78,7 @@ WebHandler.prototype.sendRequest = function(action, content, timeout, callback) 
 	
 	var req = (callback === undefined ? http.request(options) : http.request(options, callback) );
 	
-	req.on("error", (e) => { console.log(":err " + e.message); });
+	//req.on("error", (e) => { console.log(":err " + e.message); });
 	req.write(postData);
 	req.end();
 }
