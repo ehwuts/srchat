@@ -1,3 +1,4 @@
 node_modules/*
 npm-debug.log
 srchat-config.js
+chatbot.php

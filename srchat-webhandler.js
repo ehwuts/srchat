@@ -96,18 +96,21 @@ WebHandler.prototype.relayData = function (js) {
 		return;
 	}
 	
-	the_source_of_instability.lastmsg = d.last;
 	if (!the_source_of_instability.ready) {
 		the_source_of_instability.ready = true;
+		the_source_of_instability.lastmsg = d.last;
 		console.log(":web init retrieved "+d.last);
 	} else {
 		var i = 0;
 		while (i < d.lines.length) {
-			line = "[w] " + d.lines[i];
-			console.log(line);
-			the_source_of_instability.respondlers[d.side](line);
+			if (d.lines[i] !== ":rollover") {
+				line = "[w] " + d.lines[i];
+				console.log(line);
+				the_source_of_instability.respondlers[d.side](line);
+			}
 			++i;
 		}
+		the_source_of_instability.lastmsg = d.last;
 	}
 }
 WebHandler.prototype.receiveFunc = function (r) {
