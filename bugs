@@ -1,4 +1,24 @@
-ocassionally duplicate messages are received, so far only seen with :rollover
+ocassionally duplicate messages are received, so far only noticed with :rollover
 eris netcode has an unhandled exception related to loss of network access
 --alternately forgets to reconnect to discord after same
 eris netcode doesn't renew access if discord's end goes down and expects new leases upon return
+discord emotes aren't all cleanly escaped
+
+known untidily handled script errors:
+
+events.js:160
+      throw er; //Unhandled 'error' event
+
+Error: getaddrinfo ENOENT gateway.discord.gg:443
+    at Object.exports._errnoException (util.js:1018:11)
+	at errnoException (dns.js:33:15)
+	at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:76:26)
+	
+	
+events.js:160
+	throw er; //Unhandled 'error' event
+
+Error: connect ETIMEOUT 192.254.186.127.80
+	at Object.exports._errnoException (util.js:1018:11)
+	at exports._exceptionWithHostPort (util.js:1041:20)
+	at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1090:14)
