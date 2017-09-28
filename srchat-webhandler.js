@@ -103,14 +103,14 @@ WebHandler.prototype.relayData = function (js) {
 	} else {
 		var i = 0;
 		while (i < d.lines.length) {
-			if (d.lines[i] !== ":rollover") {
+			if (d.lineids[i] > the_source_of_instability.lastmsg) {
 				line = "[w] " + d.lines[i];
 				console.log(line);
 				the_source_of_instability.respondlers[d.side](line);
+				the_source_of_instability.lastmsg = d.lineids[i];
 			}
 			++i;
 		}
-		the_source_of_instability.lastmsg = d.last;
 	}
 }
 WebHandler.prototype.receiveFunc = function (r) {
