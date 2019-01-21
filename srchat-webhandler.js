@@ -78,7 +78,7 @@ WebHandler.prototype.sendRequest = function(action, content, timeout, callback) 
 	
 	var req = (callback === undefined ? http.request(options) : http.request(options, callback) );
 	
-	//req.on("error", (e) => { console.log(":err " + e.message); });
+	req.on("error", (e) => { console.log(":err " + e.message); });
 	req.write(postData);
 	req.end();
 }
@@ -103,11 +103,13 @@ WebHandler.prototype.relayData = function (js) {
 	} else {
 		var i = 0;
 		while (i < d.lines.length) {
-			if (d.lineids[i] > the_source_of_instability.lastmsg) {
+			if (d.lineids[i] > the_source_of_instability.lastmsg || d.lineids[i] === null) {
 				line = "[w] " + d.lines[i];
 				console.log(line);
 				the_source_of_instability.respondlers[d.side](line);
-				the_source_of_instability.lastmsg = d.lineids[i];
+				if (d.lineids[i] !== null) {
+					the_source_of_instability.lastmsg = d.lineids[i];
+				}
 			}
 			++i;
 		}
